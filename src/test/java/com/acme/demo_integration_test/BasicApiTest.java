@@ -4,9 +4,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static net.javacrumbs.jsonunit.spring.JsonUnitResultMatchers.json;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -18,18 +22,18 @@ public class BasicApiTest {
     private static final String REQUEST_1 = """
                 {
                   "type": "CREDIT",
-                  "txTime": "2024-12-22T22:32:40Z",
+                  "txTime": "2024-12-22T22:32:40",
                   "description": "Money :)",
-                  "value": 100.00
+                  "txValue": 100.00
                 }
             """;
 
     private static final String REQUEST_2 = """
                 {
                   "type": "CREDIT",
-                  "txTime": "2023-10-22T22:32:40Z",
+                  "txTime": "2023-10-22T22:32:40",
                   "description": "OLD Money :)",
-                  "value": 300.00
+                  "txValue": 300.00
                 }
             """;
 
@@ -43,17 +47,17 @@ public class BasicApiTest {
                        "id": "${json-unit.ignore}",
                        "creationTime" : "${json-unit.ignore}",
                       "type": "CREDIT",
-                      "txTime": "2024-12-22T22:32:40Z",
+                      "txTime": "2024-12-22T22:32:40",
                       "description": "Money :)",
-                      "value": 00.00
+                      "txValue": 100.00
                     },
                     {
                        "id": "${json-unit.ignore}",
                        "creationTime" : "${json-unit.ignore}",
                       "type": "CREDIT",
-                      "txTime": "2023-10-22T22:32:40Z",
+                      "txTime": "2023-10-22T22:32:40",
                       "description": "OLD Money :)",
-                      "value": 300.00
+                      "txValue": 300.00
                     }
                 ]
             """;
@@ -68,9 +72,21 @@ public class BasicApiTest {
      * */
     @Test
     void simpleHappyScenario() throws Exception {
-        mock.perform(post("/tx").content(REQUEST_1))
+        postTxLog(REQUEST_1);
+        postTxLog(REQUEST_2);
+
+        mock.perform(get("/tx")
+                        .contentType(APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(json().isEqualTo(EXPECTED_RESPONSE));
+    }
+
+    private void postTxLog(String request) throws Exception {
+        mock.perform(post("/tx")
+                        .contentType(APPLICATION_JSON)
+                        .content(request))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 }

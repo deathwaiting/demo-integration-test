@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface TxRepository extends JpaRepository<TransactionLog,Long> {
@@ -15,5 +16,5 @@ public interface TxRepository extends JpaRepository<TransactionLog,Long> {
             WHERE tx.txTime between :from and :to
             ORDER BY tx.txTime DESC
             """)
-    List<TransactionLog> getTxBetween(@Param("from") LocalDate from, @Param("to")LocalDate to);
+    List<TransactionLog> getTxBetween(@Param("from") LocalDateTime from, @Param("to")LocalDateTime to);
 }

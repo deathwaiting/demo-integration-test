@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -17,9 +18,10 @@ public class NewTxLog {
 
     private LocalDateTime txTime = LocalDateTime.now();
 
-    @Min(1) @Max(256)
+    @Length(min = 3, max = 256)
     private String description;
 
     @Min(0)
+    @NotNull
     private BigDecimal txValue;
 }

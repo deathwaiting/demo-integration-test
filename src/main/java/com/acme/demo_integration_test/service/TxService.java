@@ -22,7 +22,7 @@ public class TxService {
     }
 
     public List<TxLog> getLogs(LocalDate from ,LocalDate to) {
-        return repo.getTxBetween(from, to)
+        return repo.getTxBetween(from.atStartOfDay(), to.atTime(23,59, 59))
                 .stream().map(mapper::toDto)
                 .toList();
     }
