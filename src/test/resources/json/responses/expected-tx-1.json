@@ -1,0 +1,18 @@
+[
+  {
+    "id": "${json-unit.ignore}",
+    "creationTime" : "2023-12-25T14:30:00",
+    "type": "DEBIT",
+    "txTime": "2023-12-25T14:30:00",
+    "description": "Purchase Nuclear missile",
+    "txValue": -100.00
+  },
+  {
+    "id": "${json-unit.ignore}",
+    "creationTime" : "2022-12-24T10:00:00",
+    "type": "CREDIT",
+    "txTime": "2022-12-24T10:00:00",
+    "description": "Money :)",
+    "txValue": 1000.00
+  }
+]

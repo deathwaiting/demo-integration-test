@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -24,14 +25,17 @@ public class TransactionLog {
     private Long id;
 
     @CreationTimestamp
+    @Column(name = "CREATION_TIME")
     private LocalDateTime creationTime;
 
+    @Column(name = "TX_TIME")
     private LocalDateTime txTime;
 
     private String description;
 
-
+    @Column(name = "TX_VALUE")
     private BigDecimal txValue;
 
+    @Enumerated(STRING)
     private TxType type;
 }

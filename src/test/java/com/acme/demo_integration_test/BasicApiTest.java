@@ -1,12 +1,11 @@
 package com.acme.demo_integration_test;
 
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static net.javacrumbs.jsonunit.spring.JsonUnitResultMatchers.json;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -17,6 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 public class BasicApiTest {
 
     private static final String REQUEST_1 = """
@@ -82,6 +82,8 @@ public class BasicApiTest {
                 .andExpect(json().isEqualTo(EXPECTED_RESPONSE));
     }
 
+
+
     private void postTxLog(String request) throws Exception {
         mock.perform(post("/tx")
                         .contentType(APPLICATION_JSON)
@@ -89,4 +91,6 @@ public class BasicApiTest {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
+
+
 }
